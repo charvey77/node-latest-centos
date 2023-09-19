@@ -1,9 +1,8 @@
 name: Build releases
 
 on:
-  schedule:
-    - cron: 0 23 * * *
-
+  workflow_call:
+  
 jobs:
   build:
     name: Build ${{ matrix.tag }} Version
