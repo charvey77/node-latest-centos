@@ -1,0 +1,15 @@
+name: go_action
+
+on:
+#  push:
+#    branches: [ "main" ]
+#    paths-ignore:
+#    - 'README.md'
+#  pull_request:
+#    branches: [ "main" ]
+
+  workflow_dispatch:
+jobs:
+  go_job:
+    uses: github.com/charvey77/node-latest-centos/blob/master/.github/workflows/release-build.yml@latest
+    
