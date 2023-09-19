@@ -11,5 +11,4 @@ on:
   workflow_dispatch:
 jobs:
   go_job:
-    uses: github.com/charvey77/node-latest-centos/blob/master/.github/workflows/release-build.yml@latest
-    
+    uses: node-latest-centos/.github/workflows/release-build.yml@latest
