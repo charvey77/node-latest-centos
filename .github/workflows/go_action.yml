@@ -1,12 +1,12 @@
 name: go_action
 
 on:
-#  push:
-#    branches: [ "main" ]
-#    paths-ignore:
-#    - 'README.md'
-#  pull_request:
-#    branches: [ "main" ]
+  push:
+    branches: [ "master" ]
+    paths-ignore:
+    - 'README.md'
+  pull_request:
+    branches: [ "master" ]
 
   workflow_dispatch:
 jobs:
