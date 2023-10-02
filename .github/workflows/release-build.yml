@@ -39,10 +39,9 @@ jobs:
         fi
         if [[ "$TAGS" == *"$LATEST_VERSION"* ]]; then
             echo -e " \n\e[1;32mnode-v$LATEST_VERSION is already the latest version.\e[0m\n"
-            # TEMPORARY - Try to get the download and build to happen regardless
-            echo "next=true" >> "$GITHUB_ENV"
             # exit 0
-        else
+        # TEMPORARY - Try to get the download and build to happen regardless
+        # else
             echo "VERSION=$LATEST_VERSION" >> "$GITHUB_ENV"
             echo "next=true" >> "$GITHUB_ENV"
         fi
