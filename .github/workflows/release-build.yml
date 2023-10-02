@@ -39,20 +39,22 @@ jobs:
         fi
         if [[ "$TAGS" == *"$LATEST_VERSION"* ]]; then
             echo -e " \n\e[1;32mnode-v$LATEST_VERSION is already the latest version.\e[0m\n"
+            # TEMPORARY - Try to get the download and build to happen regardless
+            echo "next=true" >> "$GITHUB_ENV"
             # exit 0
         else
             echo "VERSION=$LATEST_VERSION" >> "$GITHUB_ENV"
-            # echo "next=true" >> "$GITHUB_ENV"
+            echo "next=true" >> "$GITHUB_ENV"
         fi
 
     - name: Download Node source code
-      if: env.next == 'true'
+      # if: env.next == 'true'
       run: |
         wget https://nodejs.org/dist/v${{ env.VERSION }}/node-v${{ env.VERSION }}.tar.xz
         tar -Jxf node-v${{ env.VERSION }}.tar.xz
 
     - name: Build Node
-      if: env.next == 'true'
+      # if: env.next == 'true'
       run: |
         source /opt/rh/devtoolset-10/enable
         cd node-v${{ env.VERSION }}
