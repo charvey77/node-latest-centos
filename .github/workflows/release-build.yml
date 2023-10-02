@@ -39,10 +39,10 @@ jobs:
         fi
         if [[ "$TAGS" == *"$LATEST_VERSION"* ]]; then
             echo -e " \n\e[1;32mnode-v$LATEST_VERSION is already the latest version.\e[0m\n"
-            exit 0
+            # exit 0
         else
             echo "VERSION=$LATEST_VERSION" >> "$GITHUB_ENV"
-            echo "next=true" >> "$GITHUB_ENV"
+            # echo "next=true" >> "$GITHUB_ENV"
         fi
 
     - name: Download Node source code
