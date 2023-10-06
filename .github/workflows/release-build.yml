@@ -62,7 +62,7 @@ jobs:
         strip ../node-v${{ env.VERSION }}-linux-x$(getconf LONG_BIT)/bin/node
 
     - name: Create Archive
-      if: env.next == 'true'
+      # if: env.next == 'true'
       run: |
         mkdir tar
         tar Jcvf tar/node-v${{ env.VERSION }}-linux-x$(getconf LONG_BIT).tar.xz node-v${{ env.VERSION }}-linux-x$(getconf LONG_BIT)
@@ -70,7 +70,7 @@ jobs:
         cd tar && sha256sum node-v* > sha256sum.txt
 
     - name: Upload Artifacts
-      if: env.next == 'true'
+     # if: env.next == 'true'
       uses: actions/upload-artifact@v3
       with:
         name: node-v${{ env.VERSION }}
