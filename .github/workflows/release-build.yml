@@ -1,9 +1,12 @@
 name: Build releases
 
 on:
-  workflow_dispatch:
-  schedule:
-    - cron: 0 23 * * *
+  workflow_dispatch: # Allows the workflow to be manually triggered
+    inputs:
+      branch:
+        description: 'Branch to run the workflow on'
+        default: 'dev'
+        required: true
 
 jobs:
   build:
@@ -22,6 +25,8 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@main
+      with:
+        ref: ${{ github.event.inputs.branch }}  # Checkout the specified branch
 
     - name: Init centos rootfs
       run: |
@@ -34,7 +39,7 @@ jobs:
 
     - name: Check Node Version
       run: |
-        TAGS=$(curl -sk https://api.github.com/repos/sbwml/node-latest-centos/tags | grep "name")
+        TAGS=$(curl -sk https://api.github.com/repos/charvey77/node-latest-centos/tags | grep "name")
         if [[ ${{ matrix.tag }} == "lts" ]]; then
             LATEST_VERSION=$(curl -s "https://api.github.com/repos/nodejs/node/releases" | grep 'Version.*LTS' | sed '/body/d' | head -1 | grep -oP "(?<=Version )\d+\.\d+\.\d+")
             echo "PRE_RELEASE=false" >> "$GITHUB_ENV"
