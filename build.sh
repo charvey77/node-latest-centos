@@ -34,6 +34,7 @@ cp -a ./{LICENSE,CHANGELOG.md,README.md} ../node-v"$node_version"-linux-x$(getco
 strip ../node-v"$node_version"-linux-x$(getconf LONG_BIT)/bin/node
 
 # Create Archive
+mkdir -p tar
 cd ..
 tar Jcvf tar/node-v"$node_version"-linux-x$(getconf LONG_BIT).tar.xz node-v"$node_version"-linux-x$(getconf LONG_BIT)
 tar zcvf tar/node-v"$node_version"-linux-x$(getconf LONG_BIT).tar.gz node-v"$node_version"-linux-x$(getconf LONG_BIT)
