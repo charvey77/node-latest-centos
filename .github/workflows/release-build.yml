@@ -69,15 +69,3 @@ jobs:
       with:
         name: node-v${{ env.VERSION }}
         path: out/*
-
-    - name: Create release
-      uses: ncipollo/release-action@v1.14.0
-      with:
-        name: node-v${{ env.VERSION }}
-        allowUpdates: true
-        tag: v${{ env.VERSION }}
-        commit: master
-        replacesArtifacts: true
-        prerelease: ${{ env.PRE_RELEASE }}
-        token: ${{ secrets.workflow_token }}
-        artifacts: out/*
