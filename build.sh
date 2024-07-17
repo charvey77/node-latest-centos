@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e  # Exit immediately if a command exits with a non-zero status.
+
 node_version="$1"
 
 # Setting up the environment
@@ -8,6 +10,9 @@ yum makecache
 yum install -y devtoolset-12-gcc devtoolset-12-gcc-c++ devtoolset-12-make wget curl patch openssl-devel
 bash -c "$(curl -sS https://us.cooluc.com/python3/install.sh)"
 echo "::endgroup::"
+
+# Ensure the tar directory exists
+mkdir -p tar
 
 # Download Source
 echo "::group::  Download node-v"$node_version".tar.xz"
@@ -34,7 +39,6 @@ cp -a ./{LICENSE,CHANGELOG.md,README.md} ../node-v"$node_version"-linux-x$(getco
 strip ../node-v"$node_version"-linux-x$(getconf LONG_BIT)/bin/node
 
 # Create Archive
-mkdir -p tar
 cd ..
 tar Jcvf tar/node-v"$node_version"-linux-x$(getconf LONG_BIT).tar.xz node-v"$node_version"-linux-x$(getconf LONG_BIT)
 tar zcvf tar/node-v"$node_version"-linux-x$(getconf LONG_BIT).tar.gz node-v"$node_version"-linux-x$(getconf LONG_BIT)
