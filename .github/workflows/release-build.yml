@@ -5,7 +5,7 @@ on:
     inputs:
       branch:
         description: 'Branch to run the workflow on'
-        default: 'url_updates'
+        default: 'dev'
         required: true
 
 jobs:
@@ -64,10 +64,21 @@ jobs:
       run: |
         sudo ls -l ${{ env.rootfs }}
         sudo ls -l ${{ env.rootfs }}/etc/yum.repos.d
+        sudo ls -l ${{ env.rootfs }}/build.sh
 
-    - name: Build Node.js
+    - name: Verify wget in chroot
       run: |
-        sudo cp -a build.sh ${{ env.rootfs }}
-        sudo cp -a repo/devtoolset-12.repo ${{ env.rootfs }}/etc/yum.repos.d
-        sudo chroot ${{ env.rootfs }} /bin/bash /build.sh ${{ env.VERSION }}
-        mkdir -p
+        sudo chroot ${{ env.rootfs }} /bin/bash -c "which wget"
+
+    - name: Make build.sh executable
+      run: |
+        sudo chmod +x ${{ env.rootfs }}/build.sh
+
+    - name: Verify required tools in chroot
+      run: |
+        sudo chroot ${{ env.rootfs }} /bin/bash -c "which tar"
+        sudo chroot ${{ env.rootfs }} /bin/bash -c "which xz"
+
+    - name: Run build.sh in chroot
+      run: |
+        sudo chroot ${{ env.rootfs }} /bin/bash -c "/build.sh"
