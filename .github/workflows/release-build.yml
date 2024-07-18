@@ -1,11 +1,11 @@
 name: Build releases
 
 on:
-  workflow_dispatch: # Allows the workflow to be manually triggered
+  workflow_dispatch:
     inputs:
       branch:
         description: 'Branch to run the workflow on'
-        default: 'dev'
+        default: 'url_updates'
         required: true
 
 jobs:
@@ -26,7 +26,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@main
       with:
-        ref: ${{ github.event.inputs.branch }}  # Checkout the specified branch
+        ref: ${{ github.event.inputs.branch }}
 
     - name: Init centos rootfs
       run: |
@@ -55,17 +55,19 @@ jobs:
             echo "next=true" >> "$GITHUB_ENV"
         fi
 
+    - name: Verify build.sh script
+      run: |
+        ls -l build.sh
+        cat build.sh
+
+    - name: Debug file paths
+      run: |
+        sudo ls -l ${{ env.rootfs }}
+        sudo ls -l ${{ env.rootfs }}/etc/yum.repos.d
+
     - name: Build Node.js
       run: |
         sudo cp -a build.sh ${{ env.rootfs }}
         sudo cp -a repo/devtoolset-12.repo ${{ env.rootfs }}/etc/yum.repos.d
         sudo chroot ${{ env.rootfs }} /bin/bash /build.sh ${{ env.VERSION }}
-        mkdir -p out # Ensure the output directory exists
-        sudo cp -a ${{ env.rootfs }}/node-v*.tar.* out
-        sudo cp -a ${{ env.rootfs }}/sha256sum.txt out
-
-    - name: Upload Artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: node-v${{ env.VERSION }}
-        path: out/*
+        mkdir -p
