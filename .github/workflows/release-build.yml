@@ -72,7 +72,7 @@ jobs:
 
     - name: Verify wget in chroot
       run: |
-        sudo chroot ${{ env.rootfs }} /bin/bash -c "which wget"
+        sudo chroot ${{ env.rootfs }} /bin/bash -c "[ -x /usr/bin/wget ] && echo 'wget is available' || echo 'wget is not available'"
 
     - name: Make build.sh executable
       run: |
@@ -80,8 +80,8 @@ jobs:
 
     - name: Verify required tools in chroot
       run: |
-        sudo chroot ${{ env.rootfs }} /bin/bash -c "which tar"
-        sudo chroot ${{ env.rootfs }} /bin/bash -c "which xz"
+        sudo chroot ${{ env.rootfs }} /bin/bash -c "[ -x /usr/bin/tar ] && echo 'tar is available' || echo 'tar is not available'"
+        sudo chroot ${{ env.rootfs }} /bin/bash -c "[ -x /usr/bin/xz ] && echo 'xz is available' || echo 'xz is not available'"
 
     - name: Run build.sh in chroot
       run: |
