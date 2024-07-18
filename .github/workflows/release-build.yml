@@ -5,7 +5,7 @@ on:
     inputs:
       branch:
         description: 'Branch to run the workflow on'
-        default: 'dev'
+        default: 'url_updates'
         required: true
 
 jobs:
@@ -59,6 +59,10 @@ jobs:
       run: |
         ls -l build.sh
         cat build.sh
+
+    - name: Copy build.sh to chroot
+      run: |
+        sudo cp build.sh ${{ env.rootfs }}/build.sh
 
     - name: Debug file paths
       run: |
