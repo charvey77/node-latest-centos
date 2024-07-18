@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# set -e  # Exit immediately if a command exits with a non-zero status.
+set -e  # Exit immediately if a command exits with a non-zero status.
 
 node_version="$1"
 
@@ -15,7 +15,7 @@ echo "::endgroup::"
 mkdir -p tar
 
 # Download Source
-echo "::group::  Download node-v"$node_version".tar.xz"
+echo "::group::  Download node-v$node_version.tar.xz"
 wget https://nodejs.org/dist/v"$node_version"/node-v"$node_version".tar.xz
 tar -Jxf node-v"$node_version".tar.xz
 echo "::endgroup::"
@@ -26,10 +26,10 @@ source /opt/rh/devtoolset-12/enable
 cd node-v"$node_version"
 sed -i 's/define HAVE_SYS_RANDOM_H 1/undef HAVE_SYS_RANDOM_H/g' deps/cares/config/linux/ares_config.h
 sed -i 's/define HAVE_GETRANDOM 1/undef HAVE_GETRANDOM/g' deps/cares/config/linux/ares_config.h
-echo "::group::  Configure node-v"$node_version""
+echo "::group::  Configure node-v$node_version"
 ./configure --prefix=../node-v"$node_version"-linux-x$(getconf LONG_BIT)
 echo "::endgroup::"
-echo "::group::  make node-v"$node_version""
+echo "::group::  make node-v$node_version"
 make -j$(($(nproc --all)+1))
 echo "::endgroup::"
 echo "::group::  make install"
@@ -40,6 +40,6 @@ strip ../node-v"$node_version"-linux-x$(getconf LONG_BIT)/bin/node
 
 # Create Archive
 cd ..
-tar Jcvf tar/node-v"$node_version"-linux-x$(getconf LONG_BIT).tar.xz node-v"$node_version"-linux-x$(getconf LONG_BIT)
-tar zcvf tar/node-v"$node_version"-linux-x$(getconf LONG_BIT).tar.gz node-v"$node_version"-linux-x$(getconf LONG_BIT)
-sha256sum node-v*.tar.* > sha256sum.txt
+tar Jcvf tar/node-v"$node_version"-linux-x$(getconf LONG_BIT).tar.xz node-v"$node_version"-linux-x$(getconf LONG_BIT) || { echo "Failed to create .tar.xz archive"; exit 1; }
+tar zcvf tar/node-v"$node_version"-linux-x$(getconf LONG_BIT).tar.gz node-v"$node_version"-linux-x$(getconf LONG_BIT) || { echo "Failed to create .tar.gz archive"; exit 1; }
+sha256sum tar/node-v*.tar.* > tar/sha256sum.txt || { echo "Failed to create checksum file"; exit 1; }
